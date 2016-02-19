@@ -1,5 +1,10 @@
-var http = require('http');
+var express = require('express');
+var mongoose = require('mongoose');
 
-http.createServer(function(req, res) {
-  res.end('Hello World');
-}).listen(8000, '127.0.0.1');
+var app = express();
+
+mongoose.connect('mongodb://localhost/fizzbuzz');
+
+app.listen(8000);
+
+module.exports = app;
