@@ -1,8 +1,8 @@
 var express = require('express');
 var mongoose = require('mongoose');
+var count = require('./config');
 
 var app = express();
-
 
 mongoose.connect('mongodb://localhost/fizzbuzz');
 
@@ -14,7 +14,17 @@ db.once('open', function() {
 })
 
 app.get('/', function(req, res) {
-  res.send('Hello World');
+  count.findOne({}).exec(function(err, result) {
+    if(err) {
+      res.send(err);
+    } else if(!result) {
+      var newCount = new count().save();
+      res.send(newCount);
+    } else {
+      console.log(result);
+      res.send(JSON.stringify(result.counter));
+    }
+  });
 });
 
 app.post('/', function(req, res) {
